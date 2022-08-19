@@ -81,9 +81,9 @@ jobs:
         name: manifests
         path: ./kubernetes-manifests
 
-  deploy-to-kubernetes:
-    name: Deploy to kubernetes
-    runs-on: self-hosted
+  deploy-to-staging:
+    name: Deploy to staging
+    runs-on: [self-hosted, linux, x64, staging]
     needs: setup_repo
     steps:
     - name: Download manifests
@@ -95,7 +95,7 @@ jobs:
       run: |
         sed -i "s/BACKEND_VERSION/${{ github.ref_name }}/g" backend.yml
         sed -i "s/FRONTEND_VERSION/${{ github.ref_name }}/g" frontend.yml
-        echo ${{ github.ref_name }}
     - name: Apply manifests
       run: |
         kubectl apply -f .
+        
